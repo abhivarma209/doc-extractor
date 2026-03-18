@@ -1,0 +1,7 @@
+fastapi
+uvicorn
+openai
+instructor
+tiktoken
+python-dotenv
+pydantic
