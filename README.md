@@ -1,35 +1,61 @@
-# Smart Document Extractor
+# Document Extractor API
 
-A production-grade document extraction API built with FastAPI, OpenAI, and Instructor.
+A production-grade document extraction API that accepts PDF or text files and returns structured JSON data using GPT-4o-mini.
+
+## Live Demo
+**API:** https://doc-extractor-production.up.railway.app  
+**Docs:** https://doc-extractor-production.up.railway.app/docs
 
 ## What it does
-Accepts any text document and a question, returns structured JSON data 
-extracted from the document using GPT-4o-mini with Pydantic validation.
 
-## Tech stack
-- **FastAPI** — async Python API
-- **Instructor** — structured LLM outputs with Pydantic validation
+Upload any invoice, report, or document — ask a question — get back validated structured data.
+
+```
+POST /extract/file
+{
+  "invoice_number": "INV-2025-0042",
+  "vendor_name": "CloudStack Solutions Pvt Ltd",
+  "items": [
+    { "description": "Azure AKS", "quantity": 1, "unit_price": 12000, "total": 12000 }
+  ],
+  "total_amount": 30798.89,
+  "confidence": "high",
+  "truncated": false
+}
+```
+
+## Endpoints
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | `/extract` | Extract from raw text (JSON body) |
+| POST | `/extract/file` | Extract from PDF or .txt file upload |
+| GET | `/health` | Health check |
+| GET | `/docs` | Swagger UI |
+
+## Tech Stack
+
+- **FastAPI** — async Python API framework
+- **Instructor** — structured LLM outputs with Pydantic validation and auto-retry
+- **pypdf** — PDF text extraction
 - **tiktoken** — token counting and graceful truncation
 - **Docker** — containerised for consistent deploys
+- **Railway** — cloud deployment
 
-## Run locally
+## Run Locally
+
 ```bash
+git clone https://github.com/abhivarma209/doc-extractor
+cd doc-extractor
 cp .env.example .env        # add your OPENAI_API_KEY
 docker compose up --build
+# API live at http://localhost:8000/docs
 ```
 
-## API
-`POST /extract` — extract structured data from a document  
-`GET /health`   — health check  
-`GET /docs`     — Swagger UI
+## Architecture Decisions
 
-## Architecture decisions
-- Temperature=0 for deterministic extraction
-- Graceful truncation at 3000 tokens with truncated flag in response
-- Specific exception handling per OpenAI error type
-- Structured logging with latency and confidence per request
-```
+See [ARCHITECTURE.md](./ARCHITECTURE.md) for detailed design decisions.
 
-Also create `.env.example` — a template that shows what env vars are needed without exposing real values:
-```
-OPENAI_API_KEY=sk-your-key-here
+## Learnings
+
+See [docs/LEARNINGS.md](./docs/LEARNINGS.md) for concepts covered building this project.

@@ -5,3 +5,5 @@ instructor
 tiktoken
 python-dotenv
 pydantic
+python-multipart
+pypdf
