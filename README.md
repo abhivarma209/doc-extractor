@@ -54,7 +54,7 @@ docker compose up --build
 
 ## Architecture Decisions
 
-See [ARCHITECTURE.md](./ARCHITECTURE.md) for detailed design decisions.
+See [ARCHITECTURE.md](./docs/ARCHITECTURE.md) for detailed design decisions.
 
 ## Learnings
 
